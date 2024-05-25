@@ -1,0 +1,86 @@
+{% extends 'hospital/homebase.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lobster&family=Montserrat:wght@400;600&family=Open+Sans:wght@300&family=Roboto:ital,wght@1,300&display=swap" rel="stylesheet">
+  <style media="screen">
+    .dancing-script {
+      font-family: "Dancing Script", cursive;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+    }
+    html {
+      scroll-behavior: smooth;
+    }    
+    .jumbotron {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      background-image: url('{% static "images/5.jpg" %}');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .jumbotron h5,
+    h3 {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+
+    .alert {
+      margin: 0px;
+    }
+
+
+
+    {% comment %} .glow {
+      font-size: 50px;
+      color: white;
+      text-align: center;
+      -webkit-animation: glow 1s ease-in-out infinite alternate;
+      -moz-animation: glow 1s ease-in-out infinite alternate;
+      animation: glow 1s ease-in-out infinite alternate;
+    }
+
+    @-webkit-keyframes glow {
+      from {
+        text-shadow: 0 0 10px #eeeeee, 0 0 20px #000000, 0 0 30px #000000, 0 0 40px #000000, 0 0 50px #9554b3, 0 0 60px #9554b3, 0 0 70px #9554b3;
+      }
+
+      to {
+        text-shadow: 0 0 20px #eeeeee, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+      }
+    } {% endcomment %}
+  </style>
+</head>
+<br>
+<br>
+
+<div class="jumbotron" style="margin-bottom: 0px;margin-top: 0px;">
+  <br>
+  <h5 class="display-3 dancing-script">You’ll Love the Way We Care for You</h5>
+  <br><br><br><br><br>
+  <p>
+  <h3>Emergency ?</h3>
+
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="/patientclick" role="button">Take Appointment</a>
+  </p>
+  <br><br>
+</div>
+
+<br><br><br><br>
+
+{% include "hospital/admin_doctor_patient_card.html" %}
+<br><br><br>
+
+
+{% endblock content %}
