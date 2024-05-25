@@ -35,11 +35,11 @@
 	}
 	
 	.patient-info .details {
-		flex: 1;
-	}
+		flex: 2;
+	} 
 	
-	.patient-info .details p {
-		margin: 5px 0;
+	.patient-info .details strong {
+		margin: 10px 0;
 	}
 	
 	.prescription {
@@ -70,27 +70,35 @@
 		resize: none;
 		box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 	}
-	
 </style>
 <body>
     <div class="container">
         <div class="patient-info">
             <img src="{% static doctor.profile_pic.url %}" alt="Patient Avatar" class="avatar">
             <div class="details">
-                <p><strong>Patient ID:</strong> 0x1CA93bCE2013161EBfCBa3F5cc2f1f06eD857346</p>
-                <p><strong>Full Name:</strong> Patient name last name</p>
-                <p><strong>Email:</strong></p>
-                <p><strong>Phone:</strong> 123456789</p>
-                <p><strong>City:</strong> city</p>
-                <p><strong>State:</strong> state</p>
+				<strong>Patient ID:</strong><span> 0x1CA93bCE2013161EBfCBa3F5cc2f1f06eD857346</span>
+				<br>
+                <strong>Full Name:</strong><span> Patient name last name</span>
+				<br>
+                <strong>Email:</strong><span>abc@gmail.com</span>
+				<br>
+                <strong>Phone:</strong><span> 123456789</span>
+				<br>
+                <strong>City:</strong><span> city</span>
+				<br>
+				<strong>State:</strong> <span>state</span>
+				<br>
             </div>
         </div>
         <div class="prescription">
             <div class="prescription-header">
-                <span>Rx</span>
+                <span>Prescription</span>
             </div>
             <textarea placeholder="Write prescription here..."></textarea>
-			<input type="file" />
+			<div class="form-group">
+				<label for="medicalFiles">Choose Files</label>
+				<input type="file" id="medicalFiles" class="form-control-file" multiple>
+			</div>
 
         </div>
     </div>
