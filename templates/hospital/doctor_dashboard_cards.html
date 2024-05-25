@@ -203,22 +203,18 @@
     <div class="profile-card">
         <img src="{% static doctor.profile_pic.url %}" alt="Profile Picture" class="profile-picture">
         <div class="details">
-          <strong>DocID:</strong><span> <span class="docid">0x63Ef84C7d5985c6D3437b84cfa47EE50AA6D2e3f</span></span>
+          <strong>DocID:</strong><span> <span class="docid">{{doctor.address}}</span></span>
             <br>
-            <strong>Full Name:</strong><span> Jane Doe</span>
+            <strong>Full Name:</strong><span> {{request.user.first_name}}</span>
             <br>
-            <strong>Date of Joining:</strong> <span>2022-03-10T00:00:00</span>
+            <strong>Date of Joining:</strong> <span>{{request.user.date_joined}}</span>
             <br>
-            <strong>Speciality:</strong><span> Podiatrists</span>
+            <strong>Speciality:</strong><span> {{doctor.department}}</span>
         </div>
         <div class="additional-details">
           <strong>Email:</strong><span> test_name@mail.com</span>
           <br>
-          <strong>Phone:</strong><span></span>
-          <br>
-          <strong>City:</strong><span> city</span>
-          <br>
-          <strong>State:</strong><span> state</span>
+          <strong>Phone:</strong>{{doctor.mobile}}<span></span>
         </div>
     </div>
   </div>
@@ -262,7 +258,6 @@
     </div>
     <div class="clearfix"> </div>
   </div>
-  
 </body>
 
 {% block content %}

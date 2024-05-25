@@ -567,7 +567,7 @@ def doctor_dashboard_view(request):
     patientcount=models.Patient.objects.all().filter(status=True,assignedDoctorId=request.user.id).count()
     appointmentcount=models.Appointment.objects.all().filter(status=True,doctorId=request.user.id).count()
     patientdischarged=models.PatientDischargeDetails.objects.all().distinct().filter(assignedDoctorName=request.user.first_name).count()
-
+    address = models.Doctor.objects.get(user_id=request.user.id).address
     #for  table in doctor dashboard
     appointments=models.Appointment.objects.all().filter(status=True,doctorId=request.user.id).order_by('-id')
     patientid=[]
@@ -576,6 +576,7 @@ def doctor_dashboard_view(request):
     patients=models.Patient.objects.all().filter(status=True,user_id__in=patientid).order_by('-id')
     appointments=zip(appointments,patients)
     mydict={
+    "doctor_obj" : models.Doctor.objects.get(user_id=request.user.id),
     'patientcount':patientcount,
     'appointmentcount':appointmentcount,
     'patientdischarged':patientdischarged,
