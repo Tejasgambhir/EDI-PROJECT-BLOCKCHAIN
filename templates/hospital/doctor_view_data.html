@@ -148,9 +148,128 @@
 				<label for="medicalFiles">Choose Files</label>
 				<input type="file" id="medicalFiles" class="form-control-file" multiple>
 			</div>
-			<button class="btn-save">save</button>
+			<button class="btn-save" onclick="createRecord()" >save</button>
         </div>
     </div>
 </body>
 </html>
+<script>
+	const contractAddress = '0xAE44161Cb1366E4c9A6093D1DB00175E3C36f085';
+	const contractABI = [
+	{
+		"inputs": [
+		{
+			"internalType": "string",
+			"name": "_prescription",
+			"type": "string"
+		},
+		{
+			"internalType": "string",
+			"name": "_followUp",
+			"type": "string"
+		}
+		],
+		"name": "createRecord",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+		{
+			"indexed": false,
+			"internalType": "uint256",
+			"name": "recordId",
+			"type": "uint256"
+		},
+		{
+			"indexed": false,
+			"internalType": "string",
+			"name": "prescription",
+			"type": "string"
+		},
+		{
+			"indexed": false,
+			"internalType": "string",
+			"name": "followUp",
+			"type": "string"
+		}
+		],
+		"name": "RecordCreated",
+		"type": "event"
+	},
+	{
+		"inputs": [
+		{
+			"internalType": "uint256",
+			"name": "_recordId",
+			"type": "uint256"
+		}
+		],
+		"name": "getRecord",
+		"outputs": [
+		{
+			"internalType": "string",
+			"name": "prescription",
+			"type": "string"
+		},
+		{
+			"internalType": "string",
+			"name": "followUp",
+			"type": "string"
+		}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getRecordCount",
+		"outputs": [
+		{
+			"internalType": "uint256",
+			"name": "",
+			"type": "uint256"
+		}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+	];
+	
+	let web3;
+	let contract;
+	
+	window.addEventListener('load', async () => {
+		if (window.ethereum) {
+			web3 = new Web3(window.ethereum);
+			try {
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                contract = new web3.eth.Contract(contractABI, contractAddress);
+            } catch (error) {
+                console.error("User denied account access");
+            }
+		} else if (window.web3) {
+			web3 = new Web3(window.web3.currentProvider);
+			contract = new web3.eth.Contract(contractABI, contractAddress);
+		} else {
+			alert('You need to install MetaMask!');
+		}
+		
+	});
+	
+	async function createRecord() {
+		const accounts = await web3.eth.getAccounts();
+		const prescription = document.getElementById('prescription').value;
+		const followUp = document.getElementById('followUp').value;
+		
+		contract.methods.createRecord(prescription, followUp)
+		.send({ from: accounts[0] })
+		.then(() => alert('Record created successfully'))
+		.catch(error => {console.error(error)
+		alert("Error creating record"+error.message);
+		});
+	}
+</script>
 {% endblock content %}
