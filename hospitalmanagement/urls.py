@@ -20,7 +20,6 @@ urlpatterns = [
     path('adminclick', views.adminclick_view),
     path('doctorclick', views.doctorclick_view),
     path('patientclick', views.patientclick_view),
-    path('admin-view-appointment', views.scheduleclick_view,name='admin-view-appointment'),
 
     path('adminsignup', views.admin_signup_view),
     path('doctorsignup', views.doctor_signup_view,name='doctorsignup'),

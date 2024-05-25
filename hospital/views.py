@@ -37,9 +37,6 @@ def patientclick_view(request):
 #for showing signup/login button for patient(by sumit)
 
 
-
-
-
 def admin_signup_view(request):
     form=forms.AdminSigupForm()
     if request.method=='POST':
@@ -505,26 +502,6 @@ def admin_appointment_view(request):
 def admin_view_appointment_view(request):
     appointments=models.Appointment.objects.all().filter(status=True)
     return render(request,'hospital/admin_view_appointment.html',{'appointments':appointments})
-
-@login_required(login_url='adminlogin')
-@user_passes_test(is_admin)
-def scheduleclick_view(request):
-    List = pseudo_main()
-    Que = []
-    Time = []
-    for i in List:
-        for j in range(len(i)):
-            Que.append(i[j][1])
-            Time.append(i[j][3])
-    appointments =[]
-    
-    for i in Que:
-        newList=models.Appointment.objects.get(id=i)
-        appointments.append(newList)
-        print(newList)
-    return render(request,'hospital/admin_view_appointment.html',{'appointments':appointments})
-
-
 
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
