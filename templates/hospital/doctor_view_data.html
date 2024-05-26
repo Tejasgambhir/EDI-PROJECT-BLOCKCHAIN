@@ -134,7 +134,7 @@
             <div class="prescription-header">
                 <span>Prescription</span>
             </div>
-            <textarea placeholder="Write prescription here..."></textarea>
+            <textarea id="prescription" placeholder="Write prescription here..."></textarea>
 			<div class="form-group">
 				<label for="followUp">Follow Up</label>
 				<select id="followUp" class="form-control">
@@ -149,25 +149,35 @@
 				<input type="file" id="medicalFiles" class="form-control-file" multiple>
 			</div>
 			<button class="btn-save" onclick="createRecord()" >save</button>
+			
         </div>
     </div>
+	<div class = "container">
+
+		<label for="medicalFiles">get data</label>
+			<input class ="form-control-file" type ="text" id="patientAddress"/>
+			<button class="btn-save" onclick="consultRecord()" >get</button>
+			<p id="recordDetails"></p>
+	</div>
 </body>
 </html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.9.0/web3.min.js"></script>
+
 <script>
-	const contractAddress = '0xAE44161Cb1366E4c9A6093D1DB00175E3C36f085';
+	const contractAddress = '0xEc60F307428349117A8892Cd93585a702EDE9fC1';
 	const contractABI = [
 	{
 		"inputs": [
-		{
-			"internalType": "string",
-			"name": "_prescription",
-			"type": "string"
-		},
-		{
-			"internalType": "string",
-			"name": "_followUp",
-			"type": "string"
-		}
+			{
+				"internalType": "string",
+				"name": "_prescription",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_followUp",
+				"type": "string"
+			}
 		],
 		"name": "createRecord",
 		"outputs": [],
@@ -177,99 +187,145 @@
 	{
 		"anonymous": false,
 		"inputs": [
-		{
-			"indexed": false,
-			"internalType": "uint256",
-			"name": "recordId",
-			"type": "uint256"
-		},
-		{
-			"indexed": false,
-			"internalType": "string",
-			"name": "prescription",
-			"type": "string"
-		},
-		{
-			"indexed": false,
-			"internalType": "string",
-			"name": "followUp",
-			"type": "string"
-		}
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "patient",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "recordId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "prescription",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "followUp",
+				"type": "string"
+			}
 		],
 		"name": "RecordCreated",
 		"type": "event"
 	},
 	{
 		"inputs": [
-		{
-			"internalType": "uint256",
-			"name": "_recordId",
-			"type": "uint256"
-		}
+			{
+				"internalType": "address",
+				"name": "_patient",
+				"type": "address"
+			}
 		],
-		"name": "getRecord",
+		"name": "getAllRecords",
 		"outputs": [
-		{
-			"internalType": "string",
-			"name": "prescription",
-			"type": "string"
-		},
-		{
-			"internalType": "string",
-			"name": "followUp",
-			"type": "string"
-		}
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "prescription",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "followUp",
+						"type": "string"
+					}
+				],
+				"internalType": "struct MedicalRecord.Record[]",
+				"name": "",
+				"type": "tuple[]"
+			}
 		],
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_patient",
+				"type": "address"
+			}
+		],
 		"name": "getRecordCount",
 		"outputs": [
-		{
-			"internalType": "uint256",
-			"name": "",
-			"type": "uint256"
-		}
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
 		],
 		"stateMutability": "view",
 		"type": "function"
 	}
-	];
+]
 	
 	let web3;
 	let contract;
-	
 	window.addEventListener('load', async () => {
 		if (window.ethereum) {
 			web3 = new Web3(window.ethereum);
 			try {
-                await window.ethereum.request({ method: 'eth_requestAccounts' });
-                contract = new web3.eth.Contract(contractABI, contractAddress);
-            } catch (error) {
-                console.error("User denied account access");
-            }
+				await window.ethereum.request({ method: 'eth_requestAccounts' });
+				 contract = new web3.eth.Contract(contractABI, contractAddress);
+				
+			} catch (error) {
+				console.error("User denied account access", error);
+			}
 		} else if (window.web3) {
 			web3 = new Web3(window.web3.currentProvider);
-			contract = new web3.eth.Contract(contractABI, contractAddress);
+			 contract = new web3.eth.Contract(contractABI, contractAddress);
+			
 		} else {
-			alert('You need to install MetaMask!');
+			alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
 		}
-		
 	});
-	
+
+
 	async function createRecord() {
+		console.log("Creating");
 		const accounts = await web3.eth.getAccounts();
 		const prescription = document.getElementById('prescription').value;
 		const followUp = document.getElementById('followUp').value;
 		
 		contract.methods.createRecord(prescription, followUp)
 		.send({ from: accounts[0] })
-		.then(() => alert('Record created successfully'))
+		.then(() => {alert('Record created successfully')})
 		.catch(error => {console.error(error)
 		alert("Error creating record"+error.message);
 		});
+	}
+	async function consultRecord() {
+		console.log("entering");
+		const patientAddress = document.getElementById('patientAddress').value;
+		if (web3.utils.isAddress(patientAddress)) {
+			try {
+				const records = await contract.methods.getAllRecords(patientAddress).call();
+				let recordDetailsHTML = '';
+				records.forEach((record, index) => {
+					recordDetailsHTML += `
+						<h2>Record ${index + 1}</h2>
+						<h3>Prescription</h3>
+						<p>${record.prescription}</p>
+						<h3>Follow-Up</h3>
+						<p>${record.followUp}</p>
+					`;
+				});
+				document.getElementById('recordDetails').innerHTML = recordDetailsHTML;
+			} catch (error) {
+				console.error(error);
+				alert('Error fetching records');
+			}
+		} else {
+			alert('Please enter a valid Ethereum address');
+		}
 	}
 </script>
 {% endblock content %}
