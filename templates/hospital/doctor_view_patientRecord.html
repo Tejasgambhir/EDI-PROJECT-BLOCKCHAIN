@@ -1,3 +1,4 @@
+	
 {% extends 'hospital/doctor_base.html' %}
 {% block content %}
 {%load static%}
@@ -130,34 +131,13 @@
 				<br>
             </div>
         </div>
-        <div class="prescription">
-            <div class="prescription-header">
-                <span>Prescription</span>
-            </div>
-            <textarea id="prescription" placeholder="Write prescription here..."></textarea>
-			<div class="form-group">
-				<label for="followUp">Follow Up</label>
-				<select id="followUp" class="form-control">
-					<option>After 1 Week / SOS</option>
-					<option>After 2 Weeks</option>
-					<option>After 1 Month</option>
-					<option>After 3 Months</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="medicalFiles">Choose Files</label>
-				<input type="file" id="medicalFiles" class="form-control-file" multiple>
-			</div>
-			<button class="btn-save" onclick="createRecord()" >save</button>
-			
-        </div>
-    </div>
+        
 	<div class = "container">
 
 		<label for="medicalFiles">get data</label>
 			<input class ="form-control-file" type ="text" id="patientAddress"/>
 			<button class="btn-save" onclick="consultRecord()" >get</button>
-			<table class="table table-hover" >
+            <table class="table table-hover" >
 				<thead>
 				  <tr>
 					<th>sr no</th>
@@ -166,7 +146,7 @@
 					<th>medical record</th>
 				  </tr>
 				</thead>
-				<tbody id="recordDetails"></tbody>
+                <tbody id="recordDetails"></tbody>
 			</table>
 	</div>
 </body>
@@ -313,6 +293,7 @@
 		});
 	}
 	async function consultRecord() {
+        let count = 1;
 		console.log("entering");
 		const patientAddress = document.getElementById('patientAddress').value;
 		if (web3.utils.isAddress(patientAddress)) {
@@ -326,10 +307,9 @@
                           <td>${record.prescription}</td>
                           <td>${record.followUp}</td>
                           <td>NAN</td>
-                        </tr>
+                        </tr>  
 					`;
 				});
-				console.log(recordDetailsHTML)
 				document.getElementById('recordDetails').innerHTML = recordDetailsHTML;
 			} catch (error) {
 				console.error(error);
