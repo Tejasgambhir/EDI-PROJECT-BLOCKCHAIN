@@ -1,129 +1,324 @@
-{% extends 'hospital/patient_base.html' %}
+{% extends 'hospital/doctor_base.html' %}
 {% block content %}
-
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-  <style media="screen">
-			input[type="text"],
-			select {
-			  width: 100%;
-			  padding: 12px 20px;
-			  margin: 8px 0;
-			  display: inline-block;
-			  border: 1px solid #ccc;
-			  border-radius: 4px;
-			  box-sizing: border-box;
-			}
-	  
-			input[type="button"] {
-			  width: 60%;
-			  background-color: #4caf50;
-			  color: white;
-			  padding: 14px 20px;
-			  margin: 20px 30px;
-			  border: none;
-			  border-radius: 4px;
-			  cursor: pointer;
-			}
-	  
-			input[type="button"]:hover {
-			  background-color: #45a049;
-			}
-	  
-			.doctor {
-			  border-radius: 5px;
-			  margin-left: 20%;
-			  margin-right: 20%;
-			  background-color: #f2f2f2;
-			  padding: 20px;
-			}
-	  
-			button {
-			  border: 2px solid black;
-			  background-color: white;
-			  color: black;
-			  padding: 14px 28px;
-			  font-size: 16px;
-			  cursor: pointer;
-			}
-			button:hover {
-			  background-color: black;
-			  color: white;
-			}
-	
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Information</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+<style>
+	
+	.container {
+		max-width: 800px;
+		margin: 50px auto;
+		background-color: #fff;
+		padding: 20px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+	
+	.patient-info {
+		display: flex;
+		align-items: center;
+		border-bottom: 1px solid #ccc;
+		padding-bottom: 20px;
+		margin-bottom: 20px;
+	}
+	
+	.patient-info .avatar {
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		margin-right: 20px;
+	}
+	
+	.patient-info .details {
+		flex: 2;
+	} 
+	
+	.patient-info .details strong {
+		margin: 10px 0;
+	}
+	
+	.prescription {
+		padding: 10px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
+	
+	.prescription-header {
+		display: flex;
+		align-items: center;
+		margin-bottom: 10px;
+	}
+	
+	.prescription-header span {
+		font-size: 24px;
+		font-weight: bold;
+		margin-right: 10px;
+	}
+	
+	.prescription textarea {
+		width: 100%;
+		height: 300px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		padding: 10px;
+		font-size: 16px;
+		resize: none;
+		box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+	}
+	.form-group {
+		margin-bottom: 20px;
+	}
+	
+	.form-group label {
+		display: block;
+		font-weight: bold;
+		margin-bottom: 5px;
+	}
+	
+	.form-control {
+		width: 100%;
+		padding: 5px;
+		font-size: 16px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+	}
+	
+	.form-control-file {
+		border: 1px solid #ccc;
+		padding: 5px;
+		border-radius: 5px;
+	}
+	.btn-save {
+		display: block;
+		width: 100%;
+		padding: 10px;
+		font-size: 16px;
+		background-color: #000;
+		color: #fff;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		text-align: center;
+	}
+	
+	.btn-save:hover {
+		background-color: #444;
+	}
+</style>
+<body>
+	<div class = "container">
 
-<div class="doctor">
-    <!-- <div class="container">
-        <h1>Patient Record</h1>
-        <div class="input-container">
-            <label for="patientId">Enter Patient ID:</label>
-            <input type="text" id="patientId" placeholder="Patient ID">
-            <button  class = "btn btn-primary"onclick="fetchRecord()">Fetch Record</button>
-        </div>
-        <div id="recordDetails" class="record-details">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam sunt quae unde dolorum magnam minus explicabo corporis porro! Impedit id placeat reiciendis ipsa fuga. Accusamus iusto dicta numquam quae est!</p>
-        </div>
-    </div> -->
-    <div class="doctor" >
-      <tr>
-     <td>Enter Patient Id:</td>
-     <td><input type="text" id="tid2" name="tid2"></td>
-     </tr>
-     
-    <tr><td><input type="button" onclick="get_details()" value="Get Details"></td></tr>
-   </div>
-       <h3 class="text-center">Patient Details</h3>
-       <div class="doctor" ><form>
-   <table style="width:100%">
-   
- 
-           <tr>
-     <td> Patient Name:</td>
-     <td><div class="doctor" id="get_name"></div></td>
-     </tr>
-     
-     <tr>
-     <td>Age:</td>
-     <td><div class="doctor"  id="get_age"></div></td>
-     </tr>
-     <tr>
-     <td>Gender:</td>
-     <td><div class="doctor" id="get_gen"></div></td>
-     </tr>
-     <tr>
-     <td>Height(in ft):</td>
-     <td><div class="doctor" id="get_hght"></div></td>
-     </tr>
-     <tr>
-     <td>Weight(in kg):</td>
-     <td><div class="doctor" id="get_weig"></div></td>
-     </tr>
-     <tr>
-     <td>Address:</td>
-     <td><div class="doctor"  id="get_addr"></div></td>
-     </tr>
-     <tr>
-     <td>Phone Number:</td>
-     <td><div  class="doctor" id="get_pno"></div></td>
-     </tr>
-     <tr>
-     <td>Email Id:</td>
-     <td><div class="doctor"  id="get_email"></div></td>
-     </tr>
-     <tr>
-     <td>Date:</td>
-     <td><div  class="doctor" id="get_date"></div></td>
-     </tr>
-   </table>
-      </form></div>  
-</div>
-    <script src="scripts.js"></script>
+		<label for="medicalFiles">get data</label>
+			<input class ="form-control-file" type ="text" id="patientAddress"/>
+			<button class="btn-save" onclick="consultRecord()" >get</button>
+			<table class="table table-hover" >
+				<thead>
+				  <tr>
+					<th>sr no</th>
+					<th>Prescription</th>
+					<th>Follow Up</th>
+					<th>medical record</th>
+				  </tr>
+				</thead>
+				<tbody id="recordDetails"></tbody>
+			</table>	
+	</div>
+	{% comment %} <button type="button" onclick="fetchMerkleRoot()">Merkel root</button> {% endcomment %}
 </body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.9.0/web3.min.js"></script>
+
+<script>
+	const contractAddress = '0xf741224d66f5C1282309FBf1f65995118e8d9Bdd';
+	const contractABI =[
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_prescription",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_followUp",
+				"type": "string"
+			}
+		],
+		"name": "createRecord",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "patient",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "root",
+				"type": "bytes32"
+			}
+		],
+		"name": "MerkleTreeUpdated",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "patient",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "recordId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "prescription",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "followUp",
+				"type": "string"
+			}
+		],
+		"name": "RecordCreated",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_patient",
+				"type": "address"
+			}
+		],
+		"name": "getAllRecords",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "prescription",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "followUp",
+						"type": "string"
+					}
+				],
+				"internalType": "struct MedicalRecord.Record[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_patient",
+				"type": "address"
+			}
+		],
+		"name": "getMerkleRoot",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+	
+	let web3;
+	let contract;
+	window.addEventListener('load', async () => {
+		if (window.ethereum) {
+			web3 = new Web3(window.ethereum);
+			try {
+				await window.ethereum.request({ method: 'eth_requestAccounts' });
+				 contract = new web3.eth.Contract(contractABI, contractAddress);
+				
+			} catch (error) {
+				console.error("User denied account access", error);
+			}
+		} else if (window.web3) {
+			web3 = new Web3(window.web3.currentProvider);
+			 contract = new web3.eth.Contract(contractABI, contractAddress);
+			
+		} else {
+			alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
+		}
+	});
 
 
+	async function createRecord() {
+		console.log("Creating");
+		const accounts = await web3.eth.getAccounts();
+		const prescription = document.getElementById('prescription').value;
+		const followUp = document.getElementById('followUp').value;
+		
+		contract.methods.createRecord(prescription, followUp)
+		.send({ from: accounts[0] })
+		.then(() => {alert('Record created successfully')})
+		.catch(error => {console.error(error)
+		alert("Error creating record"+error.message);
+		});
+	}
+	async function consultRecord() {
+		console.log("entering");
+		const patientAddress = document.getElementById('patientAddress').value;
+		if (web3.utils.isAddress(patientAddress)) {
+			try {
+				const records = await contract.methods.getAllRecords(patientAddress).call();
+				let recordDetailsHTML = '';
+				records.forEach((record, index) => {
+					recordDetailsHTML += `
+                        <tr>
+                          <td>${index}</td>
+                          <td>${record.prescription}</td>
+                          <td>${record.followUp}</td>
+                          <td>NAN</td>
+                        </tr>
+					`;
+				});
+				console.log(recordDetailsHTML)
+				document.getElementById('recordDetails').innerHTML = recordDetailsHTML;
+			} catch (error) {
+				console.error(error);
+				alert('Error fetching records');
+			}
+		} else {
+			alert('Please enter a valid Ethereum address');
+		}
+	}
+
+</script>
 {% endblock content %}
