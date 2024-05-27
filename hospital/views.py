@@ -595,6 +595,15 @@ def doctor_patient_view(request):
     }
     return render(request,'hospital/doctor_patient.html',context=mydict)
 
+@login_required(login_url='doctorlogin')
+@user_passes_test(is_doctor)
+def doctor_view_patientRecord(request):
+    mydict={
+    'doctor':models.Doctor.objects.get(user_id=request.user.id),
+     'patient':models.Patient.objects.get(user_id=request.user.id),
+    } #for profile picture of doctor in sidebar
+   
+    return render(request,'hospital/doctor_view_patientRecord.html',context=mydict)
 
 
 
@@ -663,8 +672,9 @@ def doctor_delete_appointment_view(request):
 
 def doctor_view_data(request):
     mydict={
-    'doctor':models.Doctor.objects.get(user_id=request.user.id), #for profile picture of doctor in sidebar
-    }
+    'doctor':models.Doctor.objects.get(user_id=request.user.id),
+     'patient':models.Patient.objects.get(user_id=5),
+    } 
     
     return render(request,'hospital/doctor_view_data.html',mydict)
 def doctor_view_records(request):
