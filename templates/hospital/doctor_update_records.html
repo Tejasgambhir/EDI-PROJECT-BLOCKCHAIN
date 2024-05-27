@@ -1,4 +1,3 @@
-	
 {% extends 'hospital/doctor_base.html' %}
 {% block content %}
 {%load static%}
@@ -81,7 +80,9 @@
 		margin-bottom: 5px;
 	}
 	
-	.form-control {ch
+	.form-control {
+		width: 100%;
+		padding: 5px;
 		font-size: 16px;
 		border: 1px solid #ccc;
 		border-radius: 5px;
@@ -115,45 +116,45 @@
         <div class="patient-info">
             <img src="{% static doctor.profile_pic.url %}" alt="Patient Avatar" class="avatar">
             <div class="details">
-				<strong>Patient ID:</strong><span> 0x1CA93bCE2013161EBfCBa3F5cc2f1f06eD857346</span>
+				<strong>Patient ID:</strong><span> {{patient.address}}</span>
 				<br>
-                <strong>Full Name:</strong><span> Patient name last name</span>
+                <strong>Full Name:</strong><span> {{request.user.first_name}}</span>
 				<br>
-                <strong>Email:</strong><span>abc@gmail.com</span>
+                <strong>Email:</strong><span>{{patientuser.email}}</span>
 				<br>
-                <strong>Phone:</strong><span> 123456789</span>
-				<br>
-                <strong>City:</strong><span> city</span>
-				<br>
-				<strong>State:</strong> <span>state</span>
+                <strong>Phone:</strong><span> {{patientForm.mobile}}</span>
 				<br>
             </div>
         </div>
-        
-	<div class = "container">
-
-		<label for="medicalFiles">get data</label>
-			<input class ="form-control-file" type ="text" id="patientAddress"/>
-			<button class="btn-save" onclick="consultRecord()" >get</button>
-            <table class="table table-hover" >
-				<thead>
-				  <tr>
-					<th>sr no</th>
-					<th>Prescription</th>
-					<th>Follow Up</th>
-					<th>medical record</th>
-				  </tr>
-				</thead>
-                <tbody id="recordDetails"></tbody>
-			</table>
-	</div>
+        <div class="prescription">
+            <div class="prescription-header">
+                <span>Prescription</span>
+            </div>
+            <textarea id="prescription" placeholder="Write prescription here..."></textarea>
+			<div class="form-group">
+				<label for="followUp">Follow Up</label>
+				<select id="followUp" class="form-control">
+					<option>After 1 Week / SOS</option>
+					<option>After 2 Weeks</option>
+					<option>After 1 Month</option>
+					<option>After 3 Months</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="medicalFiles">Choose Files</label>
+				<input type="file" id="medicalFiles" class="form-control-file" multiple>
+			</div>
+			<button class="btn-save" onclick="createRecord()" >save</button>
+			
+        </div>
+    </div>
 </body>
 </html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.9.0/web3.min.js"></script>
 
 <script>
-	const contractAddress = '0xEc60F307428349117A8892Cd93585a702EDE9fC1';
-	const contractABI = [
+	const contractAddress = '0xf741224d66f5C1282309FBf1f65995118e8d9Bdd';
+	const contractABI =[
 	{
 		"inputs": [
 			{
@@ -171,6 +172,25 @@
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "patient",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "root",
+				"type": "bytes32"
+			}
+		],
+		"name": "MerkleTreeUpdated",
+		"type": "event"
 	},
 	{
 		"anonymous": false,
@@ -242,12 +262,12 @@
 				"type": "address"
 			}
 		],
-		"name": "getRecordCount",
+		"name": "getMerkleRoot",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "bytes32",
 				"name": "",
-				"type": "uint256"
+				"type": "bytes32"
 			}
 		],
 		"stateMutability": "view",
@@ -291,7 +311,6 @@
 		});
 	}
 	async function consultRecord() {
-        let count = 1;
 		console.log("entering");
 		const patientAddress = document.getElementById('patientAddress').value;
 		if (web3.utils.isAddress(patientAddress)) {
@@ -305,9 +324,10 @@
                           <td>${record.prescription}</td>
                           <td>${record.followUp}</td>
                           <td>NAN</td>
-                        </tr>  
+                        </tr>
 					`;
 				});
+				console.log(recordDetailsHTML)
 				document.getElementById('recordDetails').innerHTML = recordDetailsHTML;
 			} catch (error) {
 				console.error(error);
@@ -317,5 +337,6 @@
 			alert('Please enter a valid Ethereum address');
 		}
 	}
+
 </script>
 {% endblock content %}

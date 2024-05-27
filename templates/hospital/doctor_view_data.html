@@ -112,42 +112,6 @@
 	}
 </style>
 <body>
-    <div class="container">
-        <div class="patient-info">
-            <img src="{% static doctor.profile_pic.url %}" alt="Patient Avatar" class="avatar">
-            <div class="details">
-				<strong>Patient ID:</strong><span> {{patient.address}}</span>
-				<br>
-                <strong>Full Name:</strong><span> {{request.user.first_name}}</span>
-				<br>
-                <strong>Email:</strong><span>abc@gmail.com</span>
-				<br>
-                <strong>Phone:</strong><span> {{patientForm.mobile}}</span>
-				<br>
-            </div>
-        </div>
-        <div class="prescription">
-            <div class="prescription-header">
-                <span>Prescription</span>
-            </div>
-            <textarea id="prescription" placeholder="Write prescription here..."></textarea>
-			<div class="form-group">
-				<label for="followUp">Follow Up</label>
-				<select id="followUp" class="form-control">
-					<option>After 1 Week / SOS</option>
-					<option>After 2 Weeks</option>
-					<option>After 1 Month</option>
-					<option>After 3 Months</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="medicalFiles">Choose Files</label>
-				<input type="file" id="medicalFiles" class="form-control-file" multiple>
-			</div>
-			<button class="btn-save" onclick="createRecord()" >save</button>
-			
-        </div>
-    </div>
 	<div class = "container">
 
 		<label for="medicalFiles">get data</label>

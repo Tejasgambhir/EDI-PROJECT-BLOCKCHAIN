@@ -8,7 +8,7 @@ from . import models
 class AdminSigupForm(forms.ModelForm):
     class Meta:
         model=User
-        fields=['first_name','last_name','username','password']
+        fields=['first_name','last_name','username','password','email']
         widgets = {
         'password': forms.PasswordInput()
         }
@@ -18,9 +18,10 @@ class AdminSigupForm(forms.ModelForm):
 class DoctorUserForm(forms.ModelForm):
     class Meta:
         model=User
-        fields=['first_name','last_name','username','password']
+        fields=['first_name','last_name','username','password','email']
         widgets = {
-        'password': forms.PasswordInput()
+        'password': forms.PasswordInput(),
+        'email' : forms.EmailInput()
         }
 class DoctorForm(forms.ModelForm):
     class Meta:
@@ -33,9 +34,10 @@ class DoctorForm(forms.ModelForm):
 class PatientUserForm(forms.ModelForm):
     class Meta:
         model=User
-        fields=['first_name','last_name','username','password']
+        fields=['first_name','last_name','username','password','email']
         widgets = {
-        'password': forms.PasswordInput()
+        'password': forms.PasswordInput(),
+        'email' : forms.EmailInput()
         }
 class PatientForm(forms.ModelForm):
     assignedDoctorId=forms.ModelChoiceField(queryset=models.Doctor.objects.all().filter(status=True),empty_label="Name and Department", to_field_name="user_id")
