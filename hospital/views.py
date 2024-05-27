@@ -600,7 +600,7 @@ def doctor_patient_view(request):
 def doctor_view_patientRecord(request,pid):
     mydict={
     'doctor':models.Doctor.objects.get(user_id=request.user.id),
-     'patient':models.Patient.objects.get(user_id=request.user.id),
+     'patient':models.Patient.objects.get(user_id=pid),
      'patientuser' : models.User.objects.get(user_id=pid),
     } #for profile picture of doctor in sidebar
    
@@ -674,15 +674,15 @@ def doctor_delete_appointment_view(request):
 def doctor_view_data(request,pid):
     mydict={
     'doctor':models.Doctor.objects.get(user_id=request.user.id),
-    'patient':models.Patient.objects.get(user_id=pid),
+    'patient':models.Patient.objects.get(id=pid),
     }
     return render(request,'hospital/doctor_view_data.html',mydict)
 def doctor_update_records(request,pid):
     mydict={
     'doctor':models.Doctor.objects.get(user_id=request.user.id),
-    'patient':models.Patient.objects.get(user_id=pid),
+    'patient':models.Patient.objects.get(id=pid),
     }
-    return render(request,'hospital/doctor_view_data.html',mydict)
+    return render(request,'hospital/doctor_update_records.html',mydict)
 
 def doctor_view_records(request):
     mydict={

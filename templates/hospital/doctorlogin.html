@@ -56,8 +56,13 @@
   <br>
   <br>
   <br><br>
-
-  
+  {% if messages %}
+    <script>
+      {% for message in messages %}
+        alert("{{ message }}");
+      {% endfor %}
+    </script>
+  {% endif %}
   <form method="post">
     {% csrf_token %}
     <div class="container register-form">
