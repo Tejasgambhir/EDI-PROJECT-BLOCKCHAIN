@@ -681,6 +681,7 @@ def doctor_update_records(request,pid):
     mydict={
     'doctor':models.Doctor.objects.get(user_id=request.user.id),
     'patient':models.Patient.objects.get(id=pid),
+    'patientuser' : models.User.objects.get(id=pid),
     }
     return render(request,'hospital/doctor_update_records.html',mydict)
 
