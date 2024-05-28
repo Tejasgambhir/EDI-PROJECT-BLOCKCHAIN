@@ -124,6 +124,7 @@
 				<br>
                 <strong>Phone:</strong><span> {{patientuser.mobile}}</span>
 				<br>
+				<strong>Appointment ID:</strong><span id> {{appointments.id}}</span>
             </div>
         </div>
         <div class="prescription">
@@ -309,6 +310,7 @@
 		.catch(error => {console.error(error)
 		alert("Error creating record"+error.message);
 		});
+		deleteAppointment(aid)
 	}
 	async function consultRecord() {
 		console.log("entering");
@@ -338,5 +340,29 @@
 		}
 	}
 
+</script>
+<script>
+    function deleteAppointment(aid) {
+        const url = `/delete-appointment/${aid}/`;
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Appointment completed successfully');
+            } else {
+                alert('Failed to delete appointment');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the appointment');
+        });
+    }
 </script>
 {% endblock content %}

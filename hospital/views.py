@@ -8,6 +8,10 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from datetime import datetime,timedelta,date
 from django.conf import settings
 from django.db.models import Q
+import boto3
+
+
+
 # Create your views here.
 def home_view(request):
     if request.user.is_authenticated:
@@ -671,20 +675,28 @@ def doctor_delete_appointment_view(request):
     appointments=zip(appointments,patients)
     return render(request,'hospital/doctor_delete_appointment.html',{'appointments':appointments,'doctor':doctor})
 
+@login_required(login_url='doctorlogin')
+@user_passes_test(is_doctor)
 def doctor_view_data(request,pid):
     mydict={
     'doctor':models.Doctor.objects.get(user_id=request.user.id),
     'patient':models.Patient.objects.get(id=pid),
     }
     return render(request,'hospital/doctor_view_data.html',mydict)
-def doctor_update_records(request,pid):
+
+@login_required(login_url='doctorlogin')
+@user_passes_test(is_doctor)
+def doctor_update_records(request,pid,aid):
     mydict={
     'doctor':models.Doctor.objects.get(user_id=request.user.id),
     'patient':models.Patient.objects.get(id=pid),
     'patientuser' : models.User.objects.get(id=pid),
+    'appointment':models.Appointment.objects.get(id=aid),
     }
     return render(request,'hospital/doctor_update_records.html',mydict)
 
+@login_required(login_url='doctorlogin')
+@user_passes_test(is_doctor)
 def doctor_view_records(request):
     mydict={
     'doctor':models.Doctor.objects.get(user_id=request.user.id), #for profile picture of doctor in sidebar
@@ -695,9 +707,10 @@ def doctor_view_records(request):
 
 @login_required(login_url='doctorlogin')
 @user_passes_test(is_doctor)
-def delete_appointment_view(request,pk):
-    appointment=models.Appointment.objects.get(id=pk)
-    appointment.delete()
+def delete_appointment_view(request,aid):
+    appointment=models.Appointment.objects.get(id=aid)
+    appointment.status = False
+    appointment.save()
     doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
     appointments=models.Appointment.objects.all().filter(status=True,doctorId=request.user.id)
     patientid=[]
@@ -877,3 +890,11 @@ def contactus_view(request):
 #------------------------ ADMIN RELATED VIEWS END ------------------------------
 #---------------------------------------------------------------------------------
 
+# import boto3
+
+# def upload_to_s3(file_path):
+#     s3 = boto3.resource('s3')
+#     BUCKET_NAME = 'your-s3-bucket-name'
+
+#     # Upload a local file to S3
+#     s3.Bucket(BUCKET_NAME).upload_file(file_path,S3_key)

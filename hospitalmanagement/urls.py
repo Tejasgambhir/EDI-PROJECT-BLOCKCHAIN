@@ -80,11 +80,11 @@ urlpatterns +=[
     path('doctor-view-records', views.doctor_view_records,name='doctor-view-records'),
     path('doctor-view-discharge-patient',views.doctor_view_discharge_patient_view,name='doctor-view-discharge-patient'),
     path('doctor-view-data/<int:pid>',views.doctor_view_data,name='doctor-view-data'),
-    path('doctor-update-records/<int:pid>',views.doctor_update_records,name='doctor-update-records'),
+    path('doctor-update-records/<int:pid>/<int:aid>',views.doctor_update_records,name='doctor-update-records'),
     path('doctor-appointment', views.doctor_appointment_view,name='doctor-appointment'),
     path('doctor-view-appointment', views.doctor_view_appointment_view,name='doctor-view-appointment'),
     path('doctor-delete-appointment',views.doctor_delete_appointment_view,name='doctor-delete-appointment'),
-    path('delete-appointment/<int:pk>', views.delete_appointment_view,name='delete-appointment'),
+    path('delete-appointment/<int:aid>', views.delete_appointment_view,name='delete-appointment'),
 ]
 
 
