@@ -154,7 +154,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.9.0/web3.min.js"></script>
 
 <script>
-	const contractAddress = '0xf741224d66f5C1282309FBf1f65995118e8d9Bdd';
+	const contractAddress = '0x6EDb048E06dbB3A3b7734ED59CA92C2aFd0f235B';
 	const contractABI =[
 	{
 		"inputs": [
@@ -173,25 +173,6 @@
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "patient",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "bytes32",
-				"name": "root",
-				"type": "bytes32"
-			}
-		],
-		"name": "MerkleTreeUpdated",
-		"type": "event"
 	},
 	{
 		"anonymous": false,
@@ -223,6 +204,19 @@
 		],
 		"name": "RecordCreated",
 		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "_root",
+				"type": "bytes32"
+			}
+		],
+		"name": "setMerkleRoot",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -263,12 +257,75 @@
 				"type": "address"
 			}
 		],
-		"name": "getMerkleRoot",
+		"name": "getRecordCount",
 		"outputs": [
 			{
-				"internalType": "bytes32",
+				"internalType": "uint256",
 				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32[]",
+				"name": "proof",
+				"type": "bytes32[]"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "root",
 				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "leaf",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "verify",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32[]",
+				"name": "proof",
+				"type": "bytes32[]"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "leaf",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "verifyRecord",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -339,6 +396,7 @@
 			alert('Please enter a valid Ethereum address');
 		}
 	}
+
 
 </script>
 <script>
